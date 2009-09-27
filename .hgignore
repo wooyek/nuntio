@@ -1,0 +1,5 @@
+glob:*.ipr
+glob:web/*.iml
+glob:*.iws
+glob:*.pyc
+glob:web/__myapp/*
