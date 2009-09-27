@@ -3,3 +3,4 @@ glob:web/*.iml
 glob:*.iws
 glob:*.pyc
 glob:web/__myapp/*
+glob:*/.svn/*
