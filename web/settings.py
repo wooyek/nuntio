@@ -1,4 +1,22 @@
 # -*- coding: utf-8 -*-
+# Copyright 2008 Janusz Skonieczny
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import logging
+logging.basicConfig(format='%(asctime)s %(levelname)-7s %(module)s.%(funcName)s - %(message)s')
+logging.debug("Settings start...")
+
 from ragendja.settings_pre import *
 
 # Increase this when you update your media on the production site, so users
@@ -44,8 +62,9 @@ LANGUAGE_CODE = 'en'
 
 # Restrict supported languages (and JS media generation)
 LANGUAGES = (
-    ('de', 'German'),
     ('en', 'English'),
+    ('pl', 'Polish'),	
+    ('de', 'German'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -77,6 +96,11 @@ MIDDLEWARE_CLASSES = (
 # Hybrid Django/Google authentication
 AUTH_USER_MODULE = 'ragendja.auth.hybrid_models'
 
+GLOBALTAGS = (
+    'ragendja.templatetags.ragendjatags',
+    'django.templatetags.i18n',
+)
+
 LOGIN_URL = '/account/login/'
 LOGOUT_URL = '/account/logout/'
 LOGIN_REDIRECT_URL = '/'
@@ -87,10 +111,10 @@ INSTALLED_APPS = (
     # Note: the order of your INSTALLED_APPS specifies the order in which
     # your app-specific media files get combined, so jquery should normally
     # come first.
-    'jquery',
+    #'jquery',
 
     # Add blueprint CSS (http://blueprintcss.org/)
-    'blueprintcss',
+    #'blueprintcss',
 
     'django.contrib.auth',
     'django.contrib.sessions',
@@ -101,9 +125,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'appenginepatcher',
     'ragendja',
-    'myapp',
     'registration',
     'mediautils',
+    'nuntio',
 )
 
 # List apps which should be left out from app settings and urlsauto loading
