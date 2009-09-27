@@ -44,11 +44,8 @@ def Page_detail(request, object_id):
     }              
     return render_to_response(request, 'nuntio/page/detail.html', d)
 
-def article_details(request, object_id):
-    return object_detail(request, Article.all(), object_id)
-
-def page_details(request, object_id):
-    return object_detail(request, Page.all(), object_id)
+def Article_detail(request, object_id):
+    return object_detail(request, Article.all(), slug=object_id)
 
 def file_full(request, object_id):
     return image_view(object_id,'file','name')
