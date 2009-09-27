@@ -1,0 +1,76 @@
+[
+    {
+        "pk": "agZudW50aW9yHgsSDG51bnRpb190b3BpYyIMYWJvdXQtbnVudGlvDA", 
+        "model": "nuntio.topic", 
+        "fields": {
+            "name": "About Nuntio", 
+            "language_code": "en"
+        }
+    }, 
+    {
+        "pk": "agZudW50aW9yFwsSDG51bnRpb190b3BpYyIFZGVtb3MM", 
+        "model": "nuntio.topic", 
+        "fields": {
+            "name": "Demos", 
+            "language_code": "en"
+        }
+    }, 
+    {
+        "pk": "agZudW50aW9yJgsSDG51bnRpb190b3BpYyIUc2l0ZXMtcnVubmluZy1udW50aW8M", 
+        "model": "nuntio.topic", 
+        "fields": {
+            "name": "Sites running Nuntio", 
+            "language_code": "en"
+        }
+    }, 
+    {
+        "pk": "agZudW50aW9yFAsSDm51bnRpb19hcnRpY2xlGA0M", 
+        "model": "nuntio.article", 
+        "fields": {
+            "body": "No server and no special skills required!\r\n\r\nHow? \r\n\r\nNuntio CMS runs on [Google App Engine](http://code.google.com/intl/pl/appengine/) on Google infrastructure, and it's [free to start](http://code.google.com/intl/pl/appengine/docs/billing.html), even run for free if your site won't get much traffic! \r\n\r\nNutio CMS is designed with simplicity in mind, this includes setup. There are only few simple steps to complete, to get your site up and running.", 
+            "status": "draft", 
+            "author": "test@example.com", 
+            "title": "Setup CMS on your site in 5 minutes.", 
+            "tease_html": "<p>No server and no special skills required!</p>\n<p>How? </p>\n<p>Nuntio CMS runs on <a href=\"http://code.google.com/intl/pl/appengine/\">Google App Engine</a> on Google infrastructure, and it's <a href=\"http://code.google.com/intl/pl/appengine/docs/billing.html\">free to start</a>, even run for free if your site won't get much traffic! </p>\n<p>Nutio CMS is designed with simplicity in mind, this includes setup. There are only few simple steps to complete, to get your site up and running.</p>", 
+            "edited": "2009-09-21 23:11:25.023000", 
+            "tease": "No server and no special skills required!\r\n\r\nHow? \r\n\r\nNuntio CMS runs on [Google App Engine](http://code.google.com/intl/pl/appengine/) on Google infrastructure, and it's [free to start](http://code.google.com/intl/pl/appengine/docs/billing.html), even run for free if your site won't get much traffic! \r\n\r\nNutio CMS is designed with simplicity in mind, this includes setup. There are only few simple steps to complete, to get your site up and running.", 
+            "body_html": "<p>No server and no special skills required!</p>\n<p>How? </p>\n<p>Nuntio CMS runs on <a href=\"http://code.google.com/intl/pl/appengine/\">Google App Engine</a> on Google infrastructure, and it's <a href=\"http://code.google.com/intl/pl/appengine/docs/billing.html\">free to start</a>, even run for free if your site won't get much traffic! </p>\n<p>Nutio CMS is designed with simplicity in mind, this includes setup. There are only few simple steps to complete, to get your site up and running.</p>", 
+            "is_short": true, 
+            "created": "2009-09-21 22:28:38", 
+            "featured_image": null, 
+            "language_code": null, 
+            "slug": "setup-cms-your-site-5-minutes"
+        }
+    }, 
+    {
+        "pk": "agZudW50aW9yKgsSDm51bnRpb19hcnRpY2xlIhYvMjAwOS8wOS8yMS9udW50aW8tY21zDA", 
+        "model": "nuntio.article", 
+        "fields": {
+            "body": "With Nuntio CMS you'll have your site up and running in minutes. Nuntio is a powerfull tool to publish articles, build company website, create a portal or just blog.", 
+            "status": "draft", 
+            "author": "test@example.com", 
+            "title": "Nuntio CMS", 
+            "tease_html": "<p>With Nuntio CMS you'll have your site up and running in minutes. Nuntio is a powerfull tool to publish articles, build company website, create a portal or just blog.</p>", 
+            "edited": "2009-09-21 23:19:35.413000", 
+            "tease": "With Nuntio CMS you'll have your site up and running in minutes. Nuntio is a powerfull tool to publish articles, build company website, create a portal or just blog.", 
+            "body_html": "<p>With Nuntio CMS you'll have your site up and running in minutes. Nuntio is a powerfull tool to publish articles, build company website, create a portal or just blog.</p>", 
+            "is_short": true, 
+            "created": "2009-09-21 21:09:16", 
+            "featured_image": null, 
+            "language_code": null, 
+            "slug": "nuntio-cms"
+        }
+    }, 
+    {
+        "pk": "agZudW50aW9yEQsSC251bnRpb19wYWdlGAoM", 
+        "model": "nuntio.page", 
+        "fields": {
+            "name": "Home", 
+            "parent_page": null, 
+            "template": null, 
+            "article": "agZudW50aW9yKgsSDm51bnRpb19hcnRpY2xlIhYvMjAwOS8wOS8yMS9udW50aW8tY21zDA", 
+            "folder": null, 
+            "slug": "home"
+        }
+    }
+]

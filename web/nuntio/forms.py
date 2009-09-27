@@ -36,18 +36,3 @@ class FileForm(forms.ModelForm):
                 del self._errors['name']
 
         return self.cleaned_data
-
-class ArticleForm(forms.ModelForm):
-    class Meta:
-        model = Article
-        exclude = ['body_html','tease_html', 'tease']
-
-    def clean_autor(self):
-        file = self.cleaned_data.get('file')
-        if isinstance(file, UploadedFile):
-            name = file.name
-            if not self.cleaned_data.get('name'):
-                self.cleaned_data['name'] = name
-                del self._errors['name']
-
-        return self.cleaned_data

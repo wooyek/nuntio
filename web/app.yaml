@@ -1,4 +1,4 @@
-﻿application: nuntio
+﻿application: nuntio-cms
 version: 1
 runtime: python
 api_version: 1
@@ -11,6 +11,10 @@ handlers:
   secure: optional
   login: admin
 
+- url: /admin/.*
+  script: common/appenginepatch/main.py
+  login: admin
+  
 - url: /media
   static_dir: _generated_media
   secure: optional

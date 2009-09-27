@@ -1,31 +1,20 @@
-	<!-- featured starts -->
-	<div id="featured" class="clear">
+<!-- featured starts -->
+<div id="featured" class="clear">
+{% if object.featured_image %}
+    <div class="image-block">
+        <img src="{{ object.featured_image.get_absolute_url }}" alt="{{ object.featured_image.name }}" title="{{ object.featured_image.name }}"/>
+    </div>
+{% endif %}
+    <div class="text-block">
 
-			<a name="TemplateInfo"></a>
+        <h2><a href="{{object.get_absolute_url }}">{{ object.title }}</a></h2>
 
-			<div class="image-block">
-              <img src="{{ MEDIA_URL }}nuntio/images/img-featured.jpg" alt="featured"/>
-         </div>
+        <p class="post-info">Posted by <a href="index.html">erwin</a>
+            | Filed under <a href="index.html">templates</a>, <a href="index.html">internet</a></p>
 
-			<div class="text-block">
+        {{ object.tease_html|safe }}
 
-				<h2><a href="index.html">Featured Post</a></h2>
+    </div>
 
-				<p class="post-info">Posted by <a href="index.html">erwin</a> | Filed under <a href="index.html">templates</a>, <a href="index.html">internet</a></p>
-
-				<p><strong>Freshpick 1.0</strong> is a free, W3C-compliant, CSS-based website template
-				by <a href="http://www.styleshout.com/">styleshout.com</a>. This work is
-				distributed under the <a rel="license" href="http://creativecommons.org/licenses/by/2.5/">
-				Creative Commons Attribution 2.5  License</a>, which means that you are free to
-				use and modify it for any purpose. All I ask is that you include a link back to
-				<a href="http://www.styleshout.com/">my website</a> in your credits. For more free designs, you can visit
-				<a href="http://www.styleshout.com/">my website</a> to see
-				my other works.
-				</p>
-
-				<p>Good luck and I hope you find my free templates useful! <a href="index.html" class="more-link">Read More</a></p>
-
-			</div>
-
-	<!-- featured ends -->
-	</div>
+    <!-- featured ends -->
+</div>
