@@ -3,3 +3,4 @@ glob:web/*.iml
 glob:*.iws
 glob:*.pyc
 glob:web/__myapp/*
+glob:arch/FreshPick1-0/*

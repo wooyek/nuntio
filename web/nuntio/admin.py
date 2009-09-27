@@ -25,8 +25,9 @@ from models import *
 import forms
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['title', 'tease', 'is_short', 'status', 'created', 'edited']
-    exclude = ['body_html','tease_html', 'tease']
+    list_display = ['title', 'tease', 'slug', 'is_short', 'status', 'created', 'edited']
+    exclude = ['body_html','tease_html', 'tease', 'is_short']
+    prepopulated_fields = {"slug": ('title',)}
 
 class TopicAdmin(admin.ModelAdmin):
     list_display = ['name']

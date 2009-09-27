@@ -40,7 +40,6 @@
 
 		<h1 id="logo-text"><a href="/" title="">Nuntio CMS</a></h1>
 		<p id="slogan">Easy to setup and use CMS for Google App Engine</p>
-        {{page.get_absolute_url}}
 
 		<div  id="nav">
 			<ul>
@@ -72,7 +71,7 @@
 			</div>
 
 			<div id="right">
-
+                {% block sidebar %}
 				<div class="sidemenu">
 					<h3>Sidebar Menu</h3>
 					<ul>
@@ -107,6 +106,7 @@
 					<input class="btn" alt="Search" type="image" name="searchsubmit" title="Search" src="{{ MEDIA_URL }}nuntio/images/search.gif" />
 					</p>
 				</form>
+                {% endblock sidebar %}
 
 			</div>
 
