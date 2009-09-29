@@ -4,3 +4,5 @@ glob:*.iws
 glob:*.pyc
 glob:web/__myapp/*
 glob:arch/FreshPick1-0/*
+glob:web/_generated_media/
+glob:web/.dynamic_media/
