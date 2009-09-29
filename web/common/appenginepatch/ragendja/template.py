@@ -37,16 +37,23 @@ class Library(Library):
         self.tag(getattr(func, "_decorated_function", func).__name__, compile_func)
         return func
 
+
+def get_template_sources(template_name, template_dirs=None):
+    """ Returs a collection of paths used to load templates in this module """
+    packed = template_name.split('/', 1)
+    if len(packed) == 2 and packed[0] in app_template_dirs:
+        return [os.path.join(app_template_dirs[packed[0]], packed[1])]
+    return []
+
 # The following defines a template loader that loads templates from a specific
 # app based on the prefix of the template path:
 # get_template("app/template.html") => app/templates/template.html
 # This keeps the code DRY and prevents name clashes.
 def app_prefixed_loader(template_name, template_dirs=None):
-    packed = template_name.split('/', 1)
-    if len(packed) == 2 and packed[0] in app_template_dirs:
-        path = os.path.join(app_template_dirs[packed[0]], packed[1])
+    path = get_template_sources(template_name, template_dirs)
+    if path is not None and len(path) == 1:
         try:
-            return (open(path).read().decode(settings.FILE_CHARSET), path)
+            return (open(path[0]).read().decode(settings.FILE_CHARSET), path[0])
         except IOError:
             pass
     raise TemplateDoesNotExist, template_name
