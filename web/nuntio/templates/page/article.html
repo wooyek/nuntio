@@ -1,0 +1,11 @@
+{% extends 'nuntio/layout.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block featured %}{% endblock featured %}
+{% block article %}
+    {% if main_article %}
+        {% include 'article/detail.html' %}
+    {% else %}
+        <h2>Oops! No article to render</h2>
+        <p>Please <a href="{% url admin:nuntio_article_changelist %}">select main article</a> for this page.</p>
+    {% endif %}
+{% endblock article %}

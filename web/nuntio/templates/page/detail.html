@@ -1,14 +1,15 @@
-{% extends 'nuntio/base.html' %}
-{% block title %}{% if object.article %}{{object.article.title}}{% else %}{{object.name}}{% endif %}{% endblock %}
+{% extends 'nuntio/layout.html' %}
+{% block title %}{{title}}{% endblock %}
 {% block featured %}
-{% if page.article %}
-        {% with page.article as object %}
-            {% include 'article/featured.html' %}
-        {% endwith %}
-{% endif %}        
+    {% if featured_article %}
+        {% include 'article/featured.html' %}
+    {% endif %}
 {% endblock featured %}
 {% block article %}
-    {% for object in page.get_article_set %}        
+    {% if main_article %}
+        {% include 'article/detail.html' %}
+    {% endif %}
+    {% for object in article_set %}
         {% include 'article/tease.html' %}
     {% endfor %}
 {% endblock article %}

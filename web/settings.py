@@ -67,6 +67,11 @@ LANGUAGES = (
     ('de', 'German'),
 )
 
+TEMPLATE_LOADERS += (
+    'plebe.template.app_model_prefixed_loader',
+    'plebe.template.app_prefixed_defaults_loader',
+)
+
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
     'django.core.context_processors.media',
@@ -99,6 +104,7 @@ AUTH_USER_MODULE = 'ragendja.auth.hybrid_models'
 GLOBALTAGS = (
     'ragendja.templatetags.ragendjatags',
     'django.templatetags.i18n',
+    'nuntio.templatetags.filters',
 )
 
 LOGIN_URL = '/account/login/'

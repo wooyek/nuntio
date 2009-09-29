@@ -25,12 +25,22 @@ from models import *
 import forms
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['title', 'tease', 'slug', 'is_short', 'status', 'created', 'edited']
+    list_display = ['title', 'tease', 'slug', 'is_short', 'status', 'created', 'edited', 'folder']
     exclude = ['body_html','tease_html', 'tease', 'is_short']
     prepopulated_fields = {"slug": ('title',)}
-
+    fieldsets = (
+           (None, {
+               'fields': ['title', 'body', 'status','main_article_for', 'featured_on_pages', 'shown_on_pages', 'topic_set', 'language_code']
+           }),
+           ('Advanced options', {
+               'classes': ['collapse'],
+               'fields': ['author', 'slug', 'allow_comments','folder', 'featured_image', 'created', 'edited'],
+           }),
+       )
+    
 class TopicAdmin(admin.ModelAdmin):
-    list_display = ['name']
+    list_display = ['name', 'slug']
+    prepopulated_fields = {"slug": ('name',)}
 
 class Image(admin.ModelAdmin):
     list_display = ['name', 'title', 'mime_type', ]
@@ -48,7 +58,7 @@ class Image(admin.ModelAdmin):
        )
 
 class PageAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'article', 'parent_page', 'template', 'folder']
+    list_display = ['name', 'slug', 'parent_page', 'template',]
     ordering = ['slug']
     prepopulated_fields = {"slug": ('name',)}
 
