@@ -1,118 +1,55 @@
+{% load filters %}
 <div class="post no-bg">
 
-					<h2><a href="index.html">A Blog Entry</a></h2>
+    <h2><a href="{{ main_article.get_absolute_url }}">{{ main_article.title }}</a></h2>
 
-					<p class="post-info">Posted by <a href="index.html">erwin</a> | Filed under <a href="index.html">templates</a>, <a href="index.html">internet</a>  </p>
+    <p class="post-info">Posted by {{main_article.author|user}}</p>
 
-					<div class="image-section">
-              		<img src="../media/images/img-post.jpg" alt="image post"/>
-         		</div>
+    {{ main_article.body_html|safe }}
 
-					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-					Cras id urna. Morbi tincidunt, orci ac <a href="index.html">convallis aliquam</a>, lectus turpis varius lorem, eu
-					posuere nunc justo tempus leo.</p>
+    {% if main_article.topic_set %}
+    <p class="tags">
+        <strong>Topics : </strong>
+        {% for topic in main_article.get_topic_set %}
+        <a href="{{tobic.get_absolute_url }}">{{topic.name}}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+    {% endif %}
 
-					<p>Donec mattis, purus nec placerat bibendum, <a href="index.html">dui pede condimentum</a>
-					odio, ac blandit ante orci ut diam. Cras fringilla magna. Phasellus suscipit, leo a pharetra
-					condimentum, lorem tellus eleifend magna, <a href="index.html">eget fringilla velit</a> magna id neque. Curabitur vel urna.
-					In tristique orci porttitor ipsum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-					Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
-					posuere nunc justo tempus leo.</p>
-
-					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-					Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
-					posuere nunc justo tempus leo. Donec mattis, purus nec placerat bibendum, dui pede condimentum
-					odio, ac blandit ante orci ut diam. Cras fringilla magna. Phasellus suscipit, leo a pharetra
-					condimentum, lorem tellus eleifend magna, eget fringilla velit magna id neque. Curabitur vel urna.
-					In tristique orci porttitor ipsum. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-					Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
-					posuere nunc justo tempus leo.
-					</p>
-
-					<p class="tags">
-						<strong>Tagged : </strong>
-						<a href="#">orci</a>, <a href="#">lectus</a>, <a href="#">varius</a>, <a href="#">turpis</a>
-					</p>
-
-					<p class="postmeta">
-					<a href="index.html" class="comments">Comments (3)</a> |
-					<span class="date">April 20, 2009</span> |
-					<a href="index.html" class="edit">Edit</a>
-					</p>
-
-					<h3 id="comments">3 Responses</h3>
-
-					<ol class="commentlist">
-
-						<li class="alt" id="comment-63">
-							<cite>
-								<img alt="" src="../media/images/gravatar.jpg" class="avatar" height="40" width="40" />
-								<a href="index.html">Erwin</a> Says: <br />
-								<span class="comment-data"><a href="#comment-63" title="">April 20th, 2009 at 8:08 am</a> </span>
-							</cite>
-
-							<div class="comment-text">
-								<p>Comments are great!</p>
-							</div>
-						</li>
-
-						<li id="comment-67">
-							<cite>
-								<img alt="" src="../media/images/gravatar.jpg" class="avatar" height="40" width="40" />
-								admin Says: <br />
-								<span class="comment-data"><a href="#comment-67" title="">April 20th, 2009 at 2:17 pm</a> </span>
-							</cite>
-
-							<div class="comment-text">
-								<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero.
-								Suspendisse bibendum.</p>
-							</div>
-						</li>
-
-						<li class="alt" id="comment-71">
-							<cite>
-								<img alt="" src="../media/images/gravatar.jpg" class="avatar" height="40" width="40" />
-								<a href="index.html">Erwin</a> Says: <br />
-								<span class="comment-data"><a href="#comment-71" title="">April 20th, 2009 at 3:17 pm</a> </span>
-							</cite>
-
-							<div class="comment-text">
-								<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-								Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
-								posuere nunc justo tempus leo.</p>
-							</div>
-						</li>
-
-					</ol>
-
- 					<h3 id="respond">Leave a Reply</h3>
-
-					<form action="index.html" method="post" id="commentform">
-
-						<p>
-							<label for="name">Name (required)</label><br />
-							<input id="name" name="name" value="Your Name" type="text" tabindex="1" />
-						</p>
-
-						<p>
-							<label for="email">Email Address (required)</label><br />
-							<input id="email" name="email" value="Your Email" type="text" tabindex="2" />
-						</p>
-
-						<p>
-							<label for="website">Website</label><br />
-							<input id="website" name="website" value="Your Website" type="text" tabindex="3" />
-						</p>
-
-						<p>
-							<label for="message">Your Message</label><br />
-							<textarea id="message" name="message" rows="10" cols="20" tabindex="4"></textarea>
-						</p>
-
-						<p class="no-border">
-							<input class="button" type="submit" value="Submit" tabindex="5" />
-						</p>
-
-					</form>
-
-				</div>
+    <p class="postmeta">
+        <span class="date">{{main_article.created|date:"Y-m-d H:i"}}</span> |
+        <span class="date">{{main_article.created|timesince}}</span> |
+        <a href="{% url admin:nuntio_article_change main_article.id %}" class="edit">Edit</a>
+    </p>
+{% if main_article.allow_comments %}
+<!-- Include the Google Friend Connect javascript library. -->
+<script type="text/javascript" src="http://www.google.com/friendconnect/script/friendconnect.js"></script>
+<!-- Define the div tag where the gadget will be inserted. -->
+<div id="div-2032934634425793989" style="border:1px solid #cccccc; margin: 12px 20px"></div>
+<!-- Render the gadget into a div. -->
+<script type="text/javascript">
+var skin = {};
+skin['BORDER_COLOR'] = '#cccccc';
+skin['ENDCAP_BG_COLOR'] = '#F8F8F8';
+skin['ENDCAP_TEXT_COLOR'] = '#333333';
+skin['ENDCAP_LINK_COLOR'] = '#0000cc';
+skin['ALTERNATE_BG_COLOR'] = '#ffffff';
+skin['CONTENT_BG_COLOR'] = '#ffffff';
+skin['CONTENT_LINK_COLOR'] = '#0000cc';
+skin['CONTENT_TEXT_COLOR'] = '#333333';
+skin['CONTENT_SECONDARY_LINK_COLOR'] = '#7777cc';
+skin['CONTENT_SECONDARY_TEXT_COLOR'] = '#666666';
+skin['CONTENT_HEADLINE_COLOR'] = '#333333';
+skin['DEFAULT_COMMENT_TEXT'] = '- dodaj tutaj sw\xf3j komentarz -';
+skin['HEADER_TEXT'] = 'Komentarze';
+skin['POSTS_PER_PAGE'] = '10';
+google.friendconnect.container.setParentUrl('/' /* location of rpc_relay.html and canvas.html */);
+google.friendconnect.container.renderWallGadget(
+ { id: 'div-2032934634425793989',
+   site: '16465622172260594106',
+   'view-params':{"disableMinMax":"true","scope":"PAGE","features":"video,comment","startMaximized":"true"}
+ },
+  skin);
+</script>
+{% endif %}
+</div>

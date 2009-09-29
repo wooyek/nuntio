@@ -37,18 +37,41 @@ def Page_detail(request, object_id):
     o = Page.get_by_url_key(object_id)
     if o is None:
         raise Http404, "No %s found matching the query" % (Page._meta.verbose_name)
-    homepage = Page.get_by_url_key("home")
-    d = {
-        "page": o,
-        "homepage": homepage,
-    }              
-    return render_to_response(request, 'nuntio/page/detail.html', d)
+
+    d = get_defaults()
+    d['title'] = o.title()
+    d['article_set'] = o.article_set()
+    d['featured_article'] = o.featured_article()
+    d['main_article'] = o.main_article()
+
+    template = 'nuntio/page/detail.html'
+    if o.template is not None:
+        template = o.template.file_name
+
+    return render_to_response(request, template, d)
 
 def Article_detail(request, object_id):
-    return object_detail(request, Article.all(), slug=object_id)
+    d = get_defaults()
+    o = Article.all().filter('slug =', object_id).get()
+    d['main_article'] = o
+    d['title'] = o.title
+    return render_to_response(request, 'nuntio/page/detail.html', d)
+
+def Topic_detail(request, object_id):
+    d = get_defaults()
+    return object_detail(request, Topic.all(), slug=object_id, extra_context=d)
+
+def get_defaults():
+    homepage = Page.all().filter("slug = ", "home").get()
+    d = {        
+        "top_page_set": homepage.page_set,
+    }
+    return d
+
 
 def file_full(request, object_id):
-    return image_view(object_id,'file','name')
+    logging.info("Serving from datastore %s" % object_id)
+    return image_view(object_id,'full','name')
 
 def image_thumb(request, object_id):
     return image_view(object_id,'thumb','name')
@@ -56,7 +79,8 @@ def image_thumb(request, object_id):
 def image_view(object_id, blob_property_name, file_name_property, model=File, ):
     object = memcache.get(object_id)
     if object is None:
-      object = model.get(object_id)
+      logging.info("Serving from datastore %s" % object_id)
+      object = model.get_by_key_name(object_id)
       memcache.add(key=object_id, value=object, time=3600)
     else:
       logging.info("Serving cached %s" % object_id)

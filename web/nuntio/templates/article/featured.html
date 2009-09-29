@@ -1,20 +1,21 @@
 <!-- featured starts -->
+{% load filters %}        
 <div id="featured" class="clear">
-{% if object.featured_image %}
-    <div class="image-block">
-        <img src="{{ object.featured_image.get_absolute_url }}" alt="{{ object.featured_image.name }}" title="{{ object.featured_image.name }}"/>
-    </div>
-{% endif %}
-    <div class="text-block">
 
-        <h2><a href="{{object.get_absolute_url }}">{{ object.title }}</a></h2>
+        <h2><a href="{{featured_article.get_absolute_url }}">{{ featured_article.title }}</a></h2>
 
-        <p class="post-info">Posted by <a href="index.html">erwin</a>
-            | Filed under <a href="index.html">templates</a>, <a href="index.html">internet</a></p>
+        <p class="post-info">
+            Posted by {{featured_article.author|user}}
+            {% if featured_article.topic_set %}
+                | Filed under
+                {% for topic in featured_article.get_topic_set %}
+                    <a href="{{topic.get_absolute_url }}">{{topic.name}}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            {% endif %}
+        </p>
 
-        {{ object.tease_html|safe }}
+        {{ featured_article.tease_html|safe }}
 
-    </div>
 
     <!-- featured ends -->
 </div>
