@@ -11,14 +11,27 @@ handlers:
   secure: optional
   login: admin
 
-- url: /admin/.*
-  script: common/appenginepatch/main.py
-  login: admin
-  
 - url: /media
   static_dir: _generated_media
   secure: optional
 
+- url: /admin/.*
+  script: common/appenginepatch/main.py
+  login: admin
+
+- url: /canvas.html
+  static_files: templates/static/canvas.html
+  upload: templates/static/canvas.html
+
+- url: /rpc_relay.html
+  static_files: templates/static/rpc_relay.html
+  upload: templates/static/rpc_relay.html
+
+- url: /robots.txt
+  static_files: templates/static/robots.txt
+  upload: templates/static/robots.txt
+
 - url: /.*
   script: common/appenginepatch/main.py
   secure: optional
+  login: admin
