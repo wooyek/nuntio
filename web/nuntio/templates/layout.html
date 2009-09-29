@@ -53,42 +53,9 @@
 
                 <div class="sidemenu">
                     <h3>Nuntio social network</h3>
-<!-- Include the Google Friend Connect javascript library. -->
-<script type="text/javascript" src="http://www.google.com/friendconnect/script/friendconnect.js"></script>
-<!-- Define the div tag where the gadget will be inserted. -->
-<div id="div-2498478864673119980" style="width:276px;border:1px solid #cccccc;"></div>
-<!-- Render the gadget into a div. -->
-<script type="text/javascript">
-var skin = {};
-skin['BORDER_COLOR'] = '#cccccc';
-skin['ENDCAP_BG_COLOR'] = '#F8F8F8';
-skin['ENDCAP_TEXT_COLOR'] = '#333333';
-skin['ENDCAP_LINK_COLOR'] = '#0000cc';
-skin['ALTERNATE_BG_COLOR'] = '#ffffff';
-skin['CONTENT_BG_COLOR'] = '#ffffff';
-skin['CONTENT_LINK_COLOR'] = '#0000cc';
-skin['CONTENT_TEXT_COLOR'] = '#333333';
-skin['CONTENT_SECONDARY_LINK_COLOR'] = '#7777cc';
-skin['CONTENT_SECONDARY_TEXT_COLOR'] = '#666666';
-skin['CONTENT_HEADLINE_COLOR'] = '#333333';
-skin['NUMBER_ROWS'] = '4';
-google.friendconnect.container.setParentUrl('/' /* location of rpc_relay.html and canvas.html */);
-google.friendconnect.container.renderMembersGadget(
- { id: 'div-2498478864673119980',
-   site: '16465622172260594106' },
-  skin);
-</script>                    
+                    {% include 'friendconnect/members.html' %}
                 </div>
 
-				<h3>Search</h3>
-
-				<form id="quick-search" action="index.html" method="get" >
-					<p>
-					<label for="qsearch">Search:</label>
-					<input class="tbox" id="qsearch" type="text" name="qsearch" value="type and hit enter..." title="Start typing and hit ENTER" />
-					<input class="btn" alt="Search" type="image" name="searchsubmit" title="Search" src="{{ MEDIA_URL }}nuntio/images/search.gif" />
-					</p>
-				</form>
                 {% endblock sidebar %}
 
 			</div>
@@ -102,73 +69,6 @@ google.friendconnect.container.renderMembersGadget(
 	<div id="footer-outer" class="clear"><div id="footer-wrap">
 
 {% block footer %}
-
-		<div class="col-a">
-
-			<h3>Image Gallery </h3>
-
-			<p class="thumbs">
-				<a href="index.html"><img src="{{ MEDIA_URL }}nuntio/images/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-				<a href="index.html"><img src="{{ MEDIA_URL }}nuntio/images/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-				<a href="index.html"><img src="{{ MEDIA_URL }}nuntio/images/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-				<a href="index.html"><img src="{{ MEDIA_URL }}nuntio/images/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-				<a href="index.html"><img src="{{ MEDIA_URL }}nuntio/images/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-				<a href="index.html"><img src="{{ MEDIA_URL }}nuntio/images/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-				<a href="index.html"><img src="{{ MEDIA_URL }}nuntio/images/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-				<a href="index.html"><img src="{{ MEDIA_URL }}nuntio/images/thumb.jpg" width="40" height="40" alt="thumbnail" /></a>
-			</p>
-
-			<h3>Lorem ipsum dolor</h3>
-
-			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-			Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
-			posuere nunc justo tempus leo. Donec mattis, purus nec placerat bibendum, dui pede condimentum
-			odio, ac blandit ante orci ut diam. Cras fringilla magna.
-		   </p>
-
-		</div>
-
-		<div class="col-a">
-
-			<h3>Lorem Ipsum</h3>
-
-			<p>
-			<strong>Lorem ipsum dolor</strong> <br />
-			Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-			Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
-			posuere nunc justo tempus leo. Donec mattis, purus nec placerat bibendum, dui pede condimentum
-			odio, ac blandit ante orci ut diam.</p>
-
-			<div class="footer-list">
-				<ul>
-					<li><a href="index.html">consequat molestie</a></li>
-					<li><a href="index.html">sem justo</a></li>
-					<li><a href="index.html">semper</a></li>
-					<li><a href="index.html">magna sed purus</a></li>
-					<li><a href="index.html">tincidunt</a></li>
-					<li><a href="index.html">consequat molestie</a></li>
-					<li><a href="index.html">magna sed purus</a></li>
-				</ul>
-			</div>
-
-		</div>
-
-		<div class="col-b">
-
-			<h3>About</h3>
-
-			<p>
-			<a href="index.html"><img src="{{ MEDIA_URL }}nuntio/images/gravatar.jpg" width="40" height="40" alt="firefox" class="float-left" /></a>
-			Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-			Cras id urna. Morbi tincidunt, orci ac convallis aliquam, lectus turpis varius lorem, eu
-			posuere nunc justo tempus leo. Donec mattis, purus nec placerat bibendum, dui pede condimentum
-			odio, ac blandit ante orci ut diam.</p>
-
-			<p>
-			Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec libero. Suspendisse bibendum.
-			Cras id urna. <a href="index.html">Learn more...</a></p>
-
-		</div>
 
 {% endblock footer %}
 
