@@ -35,53 +35,42 @@ from django.utils import simplejson
 from ragendja.apputils import get_app_dirs
 import os, logging
 
-def app_model_prefixed_loader(template_name, template_dirs=None):
+
+def get_template_sources(template_name, template_dirs=None):
+    """ Returs a collection of paths used to load templates in this module """
+    packed = template_name.split('/', 1)
+    if len(packed) == 2 and packed[0] in app_template_dirs:
+        model_prefixed = packed[1].split('_',1)
+        generic_path = os.path.join(app_template_dirs[packed[0]], model_prefixed[1])
+
+        model_prefixed = os.path.join(*model_prefixed)
+        model_path = os.path.join(app_template_dirs[packed[0]], model_prefixed)
+        return [model_path, generic_path]
+    return []
+
+def app_model_templates_loader(template_name, template_dirs=None):
     """
     Loader for model dependent templates stored in model named
-    directories, app/templates/<model_name>/form.html 
+    directories, app/templates/<model_name>/form.html and generic
+    templates fallback app/templates/form.html.
 
     The following defines a template loader that loads templates from a specific
     app based on the prefix of the template path:
     get_template("app/<model_name>_template.html") => app/templates/<model_name>/template.html
-
-    This keeps the code DRY and prevents name clashes.
-    """
-    packed = template_name.split('/', 1)
-    if len(packed) == 2 and packed[0] in app_template_dirs:
-        model_prefixed = packed[1].split('_',1)
-        model_prefixed = os.path.join(*model_prefixed)
-        path = os.path.join(app_template_dirs[packed[0]], model_prefixed)
-        logging.debug("Looking for tempalte: %s" % path)
-        try:
-            return (open(path).read().decode(settings.FILE_CHARSET), path)
-        except IOError:
-            pass
-    raise TemplateDoesNotExist, template_name
-app_model_prefixed_loader.is_usable = True
-
-def app_prefixed_defaults_loader(template_name, template_dirs=None):
-    """
-    Loader for generic model independent templates, eg. form.html
-
-    The following defines a template loader that loads templates from a specific
-    app based on the prefix of the template path:
+    if not found, will try generic template
     get_template("app/<model_name>_template.html") => app/templates/template.html
 
     This keeps the code DRY and prevents name clashes.
     """
-    packed = template_name.split('/', 1)
-    if len(packed) == 2 and packed[0] in app_template_dirs:
-        model_prefixed = packed[1].split('_',1)
-        if len(model_prefixed) == 1:
-          raise TemplateDoesNotExist, template_name
-        path = os.path.join(app_template_dirs[packed[0]], model_prefixed[1])
+    for path in get_template_sources(template_name, template_dirs):
         logging.debug("Looking for tempalte: %s" % path)
         try:
             return (open(path).read().decode(settings.FILE_CHARSET), path)
         except IOError:
             pass
     raise TemplateDoesNotExist, template_name
-app_prefixed_defaults_loader.is_usable = True
+
+app_model_templates_loader.is_usable = True
 
 # This is needed by app_prefixed_loader.
 app_template_dirs = get_app_dirs('templates')        
