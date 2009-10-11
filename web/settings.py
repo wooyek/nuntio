@@ -36,9 +36,9 @@ COMBINE_MEDIA = {
         # http://code.google.com/p/app-engine-patch/wiki/MediaGenerator
         '.site_data.js',
     ),
-    'combined-%(LANGUAGE_DIR)s.css': (
-        'global/look.css',
-    ),
+#    'combined-%(LANGUAGE_DIR)s.css': (
+#        'global/look.css',
+#    ),
 }
 
 # Change your email settings
