@@ -42,10 +42,10 @@ class File(BaseModel):
     title               = db.StringProperty(required=False)
     full                = db.BlobProperty()
     thumb               = db.BlobProperty()
+    folders             = KeyListProperty(Folder)
     description         = db.TextProperty()
     description_html    = db.TextProperty()
     mime_type           = db.StringProperty()
-    folders             = KeyListProperty(Folder)
 
     @permalink
     def get_absolute_url(self):
@@ -204,7 +204,7 @@ class Article(BaseModel):
 
 class ArticleI18n(BaseModel):
     """ An extenstion to the one article for language different than default"""
-    article          = db.ReferenceProperty(Article)
+    article         = db.ReferenceProperty(Article)
     language_code   = db.StringProperty(choices=LANGUAGES)
     title           = db.StringProperty()
     body            = db.TextProperty(required=True,default='')
@@ -212,10 +212,10 @@ class ArticleI18n(BaseModel):
     tease           = db.TextProperty(required=False)
     tease_html      = db.TextProperty(required=False)
 
-class SimilarArticleSet(BaseModel):
+class ArticleSet(BaseModel):
     """ An article collection simliar to the one """
-    article          = db.ReferenceProperty(Article)
-    articles         = KeyListProperty(Article)
+    name            = db.StringProperty(required=True)
+    articles        = KeyListProperty(Article)
 
 
 
