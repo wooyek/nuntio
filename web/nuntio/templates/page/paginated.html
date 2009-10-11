@@ -1,0 +1,26 @@
+{% extends 'nuntio/layout.html' %}
+{% block title %}{{title}}{% endblock %}
+{% block featured %}
+    {% if featured_article %}
+        {% include 'article/featured.html' %}
+    {% endif %}
+{% endblock featured %}
+{% block article %}
+    {% for object in article_list %}
+        {% include 'article/tease.html' %}
+    {% endfor %}
+<div class="pagination">
+    {%if article_page_obj.has_previous %}
+        <a class="novisit" href="?article_page=1">&laquo; Newest</a>
+    {%endif%}
+    {%if article_page_obj.has_previous %}
+        <a class="novisit" href="?article_page={{article_page_obj.previous_page_number}}">&lsaquo; Newer</a>
+    {%endif%}
+    <b>{{ article_page_obj.number }} of {{ article_paginator.num_pages }}</b>
+    {%if article_page_obj.has_next %}
+        <a class="novisit" href="?article_page={{article_page_obj.next_page_number}}">Older &rsaquo;</a>
+        <a class="novisit" href="?article_page={{article_paginator.num_pages}}">Oldest &raquo;</a>
+    {%endif%}
+</div>
+
+{% endblock article %}

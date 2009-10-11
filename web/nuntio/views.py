@@ -27,6 +27,8 @@ from django.template.context import RequestContext
 
 from appenginepatch.ragendja.template import render_to_response, render_to_string
 
+import plebe.generic
+
 from models import *
 import forms
 
@@ -38,9 +40,14 @@ def Page_detail(request, object_id):
     if o is None:
         raise Http404, "No %s found matching the query" % (Page._meta.verbose_name)
 
+    article_set = o.article_set()
     d = get_defaults()
     d['title'] = o.title()
-    d['article_set'] = o.article_set()
+    paging = plebe.generic.object_list(request, article_set, 3, template_object_name='article')
+    logging.debug(paging)
+    d.update(paging)
+    logging.debug(d)
+    d['article_set'] = article_set.fetch(300,0)
     d['featured_article'] = o.featured_article()
     d['main_article'] = o.main_article()
 
@@ -89,3 +96,6 @@ def image_view(object_id, blob_property_name, file_name_property, model=File, ):
         response['Content-Disposition'] = 'attachment; filename=%s' % getattr(object,file_name_property)
         return response
     return HttpResponseNotFound("File not found")
+
+
+    
