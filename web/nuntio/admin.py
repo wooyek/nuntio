@@ -30,7 +30,7 @@ class ArticleAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ('title',)}
     fieldsets = (
            (None, {
-               'fields': ['title', 'body', 'status','main_article_for', 'featured_on_pages', 'shown_on_pages', 'topic_set', 'language_code']
+               'fields': ['title', 'body', 'status','main_on_pages', 'featured_on_pages', 'shown_on_pages', 'topic_set', 'language_code']
            }),
            ('Advanced options', {
                'classes': ['collapse'],
@@ -67,7 +67,7 @@ admin.site.register(Topic, TopicAdmin)
 admin.site.register(File)
 admin.site.register(Folder)
 admin.site.register(Page, PageAdmin)
-admin.site.register(SimilarArticleSet)
+admin.site.register(ArticleSet)
 admin.site.register(Template)
 
 logging.info("Admin loaded.")

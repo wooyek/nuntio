@@ -1,0 +1,14 @@
+{% extends 'nuntio/layout.html' %}
+{% block title %}{{title}}{% endblock %}
+ {% if main_article %}
+        {% block featured %}
+        {% with main_article as featured_article %}
+            {% include 'article/featured.html' %}
+        {% endwith %}
+    {% endblock featured %}
+  {% endif %}
+{% block article %}
+    {% for object in article_set %}
+        {% include 'article/tease.html' %}
+    {% endfor %}
+{% endblock article %}

@@ -130,13 +130,13 @@ class Page(BaseModel):
         BaseModel.put(self)
 
     def article_set(self):
-        return Article.all().filter('shown_on_pages =', self.key()).fetch(30,0)
+        return Article.all().filter('shown_on_pages =', self.key())
 
     def featured_article(self):
         return Article.all().filter('featured_on_pages =', self.key()).get()
 
     def main_article(self):
-        return Article.all().filter('main_article_for =', self.key()).get()
+        return Article.all().filter('main_on_pages =', self.key()).get()
 
     def __unicode__(self):
         return u'%s' % self.name
@@ -152,6 +152,7 @@ class Article(BaseModel):
     body                = db.TextProperty(required=True,default='')
     body_html           = db.TextProperty(required=False,default='')
     main_article_for    = KeyListProperty(Page)                  
+    main_on_pages       = KeyListProperty(Page)
     featured_on_pages   = KeyListProperty(Page)
     shown_on_pages      = KeyListProperty(Page)
     status          	= db.StringProperty(required=True, choices=POST_STATUS_CHOISES, default="draft")
@@ -186,7 +187,7 @@ class Article(BaseModel):
         logging.debug(a)
         return a
 
-    def put(self):
+    def put(self, update_mains=True):
         if self.created is None:
             self.created = datetime.datetime.now()
         self.body_html = markdown.markdown(self.body)
@@ -196,6 +197,24 @@ class Article(BaseModel):
         else:
             self.is_short = False
         self.tease_html = markdown.markdown(self.tease)
+        logging.debug("Article %s" % self)
+        logging.debug("Article %s" % self.key())
+        if update_mains:
+            for key in self.main_on_pages:
+                logging.debug("Main on %s" % key)
+                # seach for curent main atricles on these pages
+                # and brak connection if it's this one now
+                mains = Article.all().filter('main_on_pages =', key).fetch(5,0)
+                logging.debug(len(mains))
+                for a in mains:
+                    logging.debug("Main on also %s" % type(a) )
+                    logging.debug("Main on also %s" % a.key())
+                    if a.key() != self.key():
+                        logging.debug(a.main_on_pages)
+                        a.main_on_pages.remove(key)
+                        logging.debug(a.main_on_pages)
+                        a.put(False)
+
         if self.author is None:
             self.author = users.get_current_user().email()
         if self.slug is None:
