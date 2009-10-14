@@ -15,6 +15,10 @@ handlers:
   static_dir: _generated_media
   secure: optional
 
+- url: /admin/.*
+  script: common/appenginepatch/main.py
+  login: admin
+
 - url: /.*
   script: common/appenginepatch/main.py
   secure: optional

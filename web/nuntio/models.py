@@ -29,93 +29,6 @@ from appenginepatch.ragendja.dbutils import KeyListProperty
 
 import markdown
 
-LANGUAGES = [item[0] for item in settings.LANGUAGES]
-
-class Topic(BaseModel):
-    """ A named article collection """
-    name            = db.StringProperty(required=True)
-    language_code   = db.StringProperty(choices=LANGUAGES)
-
-    @permalink
-    def get_absolute_url(self):
-        return ('topic_details', None, { 'object_id': self.key().name() })
-
-    def put(self):
-        if not self.is_saved():
-            self._key_name = slugify(self.name[0:200])
-        BaseModel.put(self)
-
-    def __unicode__(self):
-        return u'%s' % self.name
-
-class TopicI18n(BaseModel):
-    """ An topic extenstion for language different than default"""
-    name            = db.StringProperty(required=True)
-    language_code   = db.StringListProperty(choices=LANGUAGES)
-    
-
-class Article(BaseModel):
-    """ A main content model """
-    POST_STATUS_CHOISES = ('draft','private','silent','public')
-
-    title           = db.StringProperty()
-    body            = db.TextProperty(required=True,default='')
-    body_html       = db.TextProperty(required=False,default='')
-    status          = db.StringProperty(required=True, choices=POST_STATUS_CHOISES, default="draft")
-    topic           = KeyListProperty(Topic)
-    tease           = db.TextProperty(required=False)
-    tease_html      = db.TextProperty(required=False)
-    language_code   = db.StringProperty(choices=LANGUAGES)
-    author          = db.EmailProperty()
-    is_short        = db.BooleanProperty(default=False)
-    created         = db.DateTimeProperty()#auto_now_add=True)
-    edited          = db.DateTimeProperty(auto_now=True)
-
-    def __unicode__(self):
-        return u'%s' % self.title
-
-    @permalink
-    def get_absolute_url(self):
-        return ('atricle_details', None, {'object_id': self.key().name() })
-
-    def get_previous_post(self):
-        return self.get_previous_by_publish(status__gte=2)
-
-    def get_next_post(self):
-        return self.get_next_by_publish(status__gte=2)
-
-    def put(self):
-        if self.created is None:
-            self.created = datetime.datetime.now()
-        self.body_html = markdown.markdown(self.body)
-        tease = self.body.split("<!--more-->")[0]
-        if self.body.count("<!--more-->") < 1:
-            self.is_short = True
-        else:
-            self.is_short = False
-        self.tease = markdown.markdown(tease)
-        if self.author is None:
-            self.author = users.get_current_user().email()
-        if not self.is_saved():
-            slug = slugify(self.title[0:50])
-            key = "/%d/%02d/%02d/%s" % (self.created.year, self.created.month, self.created.day, slug)
-            self._key_name = key
-        BaseModel.put(self)
-
-class ArticleI18n(BaseModel):
-    """ An extenstion to the one article for language different than default"""
-    article          = db.ReferenceProperty(Article)
-    language_code   = db.StringProperty(choices=LANGUAGES)
-    title           = db.StringProperty()
-    body            = db.TextProperty(required=True,default='')
-    body_html       = db.TextProperty(required=False,default='')
-    tease           = db.TextProperty(required=False)
-    tease_html      = db.TextProperty(required=False)
-
-class SimilarArticleSet(BaseModel):
-    """ An article collection simliar to the one """
-    article          = db.ReferenceProperty(Article)
-    articles         = KeyListProperty(Article)
 
 class Folder(BaseModel):
     name            = db.StringProperty(required=True)
@@ -155,20 +68,47 @@ class File(BaseModel):
         return u'File: %s' % self.name
 
 
+LANGUAGES = [item[0] for item in settings.LANGUAGES]
+
+class Topic(BaseModel):
+    """ A named article collection """
+    name            = db.StringProperty(required=True)
+    language_code   = db.StringProperty(choices=LANGUAGES)
+    slug            =  db.StringProperty()
+
+    @permalink
+    def get_absolute_url(self):
+        return ('Topic_detail', None, { 'object_id': self.slug })
+
+    def put(self):
+        if self.slug is None:
+            self.slug = slugify(self.name[0:200])
+        BaseModel.put(self)
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
+class TopicI18n(BaseModel):
+    """ An topic extenstion for language different than default"""
+    name            = db.StringProperty(required=True)
+    language_code   = db.StringListProperty(choices=LANGUAGES)
+
 class Template(BaseModel):
     """A template file """
     name        = db.StringProperty(required=True)
     file_name   = db.StringProperty(required=True)
 
+    def __unicode__(self):
+        return u'%s' % self.name
+
 class Page(BaseModel):
-    name        = db.StringProperty(required=True)
-    article     = db.ReferenceProperty(Article)         # A main arcicle for this page
-    parent_page = db.SelfReferenceProperty()            # Page tree - TODO, evaluate MPTT use here
-    slug        = db.StringProperty()
-    template    = db.ReferenceProperty(Template)        # Template to used to render this page
+    name                = db.StringProperty(required=True)
+    parent_page         = db.SelfReferenceProperty()            # Page tree - TODO, evaluate MPTT use here
+    use_article_title   = db.BooleanProperty()
+    slug                = db.StringProperty()
+    template            = db.ReferenceProperty(Template)        # Template to used to render this page
 #    lft         = db.IntegerProperty(required=True)
 #    rgt         = db.IntegerProperty(required=True)
-    folder      = db.ReferenceProperty(Folder)          # A folder with files relevant to this page
 
     @permalink
     def get_absolute_url(self):
@@ -180,17 +120,102 @@ class Page(BaseModel):
          return cls.all().filter("slug = ", key).get()
 
     def title(self):
-        if self.article is not None:
+        if self.use_article_title and self.article is not None:
             return self.article.title
-        return self.name   
+        return self.name
 
     def put(self):
         if self.slug is None:
             self.slug = slugify(self.name)
         BaseModel.put(self)
 
+    def article_set(self):
+        return Article.all().filter('shown_on_pages =', self.key()).fetch(30,0)
+
+    def featured_article(self):
+        return Article.all().filter('featured_on_pages =', self.key()).get()
+
+    def main_article(self):
+        return Article.all().filter('main_article_for =', self.key()).get()
 
     def __unicode__(self):
         return u'%s' % self.name
 #        return u'%s%s' % (('/' if self.parent_page is None else self.parent_page.slug), self.slug)
 #        return u'%s/%s' % (('' if self.parent_page is None else self.parent_page), self.name)
+  
+
+class Article(BaseModel):
+    """ A main content model """
+    POST_STATUS_CHOISES = ('draft','private','silent','public')
+
+    title               = db.StringProperty()
+    body                = db.TextProperty(required=True,default='')
+    body_html           = db.TextProperty(required=False,default='')
+    main_article_for    = KeyListProperty(Page)                  
+    featured_on_pages   = KeyListProperty(Page)
+    shown_on_pages      = KeyListProperty(Page)
+    status          	= db.StringProperty(required=True, choices=POST_STATUS_CHOISES, default="draft")
+    allow_comments      = db.BooleanProperty(default=True)
+    slug                = db.StringProperty()
+    topic_set           = KeyListProperty(Topic)
+    featured_image      = db.ReferenceProperty(File)
+    folder              = db.ReferenceProperty(Folder)          # A folder with files relevant to this article
+    tease               = db.TextProperty(required=False)
+    tease_html          = db.TextProperty(required=False)
+    language_code       = db.StringProperty(choices=LANGUAGES)
+    author              = db.EmailProperty()
+    is_short            = db.BooleanProperty(default=False)
+    created             = db.DateTimeProperty()#auto_now_add=True)
+    edited              = db.DateTimeProperty(auto_now=True)
+
+    def __unicode__(self):
+        return u'%s' % self.title
+
+    @permalink
+    def get_absolute_url(self):
+        return ('Article_detail', None, {'object_id': self.slug })
+
+    def get_previous_post(self):
+        return self.get_previous_by_publish(status__gte=2)
+
+    def get_next_post(self):
+        return self.get_next_by_publish(status__gte=2)
+
+    def get_topic_set(self):
+        a = Topic.get(self.topic_set)
+        logging.debug(a)
+        return a
+
+    def put(self):
+        if self.created is None:
+            self.created = datetime.datetime.now()
+        self.body_html = markdown.markdown(self.body)
+        self.tease = self.body.split("<!--more-->")[0]
+        if self.body.count("<!--more-->") < 1:
+            self.is_short = True
+        else:
+            self.is_short = False
+        self.tease_html = markdown.markdown(self.tease)
+        if self.author is None:
+            self.author = users.get_current_user().email()
+        if self.slug is None:
+            self.slug = slugify(self.title).__str__()
+        BaseModel.put(self)
+
+class ArticleI18n(BaseModel):
+    """ An extenstion to the one article for language different than default"""
+    article          = db.ReferenceProperty(Article)
+    language_code   = db.StringProperty(choices=LANGUAGES)
+    title           = db.StringProperty()
+    body            = db.TextProperty(required=True,default='')
+    body_html       = db.TextProperty(required=False,default='')
+    tease           = db.TextProperty(required=False)
+    tease_html      = db.TextProperty(required=False)
+
+class SimilarArticleSet(BaseModel):
+    """ An article collection simliar to the one """
+    article          = db.ReferenceProperty(Article)
+    articles         = KeyListProperty(Article)
+
+
+

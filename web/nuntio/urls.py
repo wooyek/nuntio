@@ -22,22 +22,19 @@ See http://www.djangoproject.com/documentation/url_dispatch/
 
 import logging
 
-logging.info("Urls...")
+logging.info("Urls loading")
 from django.conf.urls.defaults import *
-logging.info("Urls...")
 import views as v
-logging.info("Urls...")
 
 urlpatterns = patterns('',
     url(r'^$', v.home, name='home'),
-    url(r'^article/(?P<tag_key>[-\w]+)/$', v.article_details, name='article_details'),
+    url(r'^article/(?P<object_id>[\w-]+)/$', v.Article_detail, name='Article_detail'),
+    url(r'^p/(?P<object_id>[\w-]+)/$', v.Page_detail, name='Page_detail'),
+    url(r'^t/(?P<object_id>[\w-]+)/$', v.Topic_detail, name='Topic_detail'),
 
-    url(r'^page/(?P<object_id>[\w-]+)/$', v.page_details, name='page_details'),
-    url(r'^file/(?P<object_id>[\w-]+)$', v.file_full, name='file_full'),
+    url(r'^file/(?P<object_id>[\w-]+)/$', v.file_full, name='file_full'),
     url(r'^fthumb/(?P<object_id>[\w-]+)$', v.file_full, name='file_thumb'),
 
-    # Keep it last so other correct URL wont be cauth by this cachall expression
-    url(r'p/^(?P<object_id>[\w-]+)/$', v.Page_detail, name='Page_detail'),
 )
 
-logging.info("Urls...")
+logging.info("Urls loaded")

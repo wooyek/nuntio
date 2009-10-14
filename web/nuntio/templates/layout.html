@@ -1,0 +1,101 @@
+{% extends 'nuntio/base.html' %}
+{% block body %}
+<!-- wrap starts here -->
+<div id="wrap">
+
+	<!--header -->
+	<div id="header">
+
+		<h1 id="logo-text"><a href="/" title="">Nuntio CMS</a></h1>
+		<p id="slogan">Easy to setup and use CMS for Google App Engine</p>
+
+		<div  id="nav">
+			<ul>
+				<li class="first" id="current"><a href="/">Home</a></li>
+                {% for page in top_page_set %}
+                <li><a href="{{ page.get_absolute_url }}">{{page.title}}</a></li>
+                {% endfor %}
+			</ul>
+		</div>
+
+		<div id="header-image"></div>
+
+	<!--header ends-->
+	</div>
+
+{% block featured %}
+{% include 'article/featured.html' %}
+{% endblock featured %}
+
+	<!-- content -->
+	<div id="content-outer" class="clear"><div id="content-wrap">
+
+		<div id="content">{% block content %}
+
+			<div id="left">
+                {% block article %}
+                {% include 'article/tease.html' %}
+                {% endblock article %}
+			</div>
+
+			<div id="right">
+                {% block sidebar %}
+				<div class="sidemenu">
+					<h3>Sites using Nutio</h3>
+					<ul>
+						<li><a href="http://lomianki.org">Nasze Łomianki</a></li>
+						<li><a href="http://skonieczny.pl">Skonieczny.pl</a></li>
+                        <li><a href="mailto:janusz@skonieczny.pl">... is your site using Nuntio?</a></li>
+					</ul>
+				</div>
+
+
+
+                <div class="sidemenu">
+                    <h3>Nuntio social network</h3>
+                    {% include 'friendconnect/members.html' %}
+                </div>
+
+                {% endblock sidebar %}
+
+			</div>
+
+        {% endblock content %}</div>
+
+	<!-- content end -->
+	</div></div>
+
+	<!-- footer starts here -->
+	<div id="footer-outer" class="clear"><div id="footer-wrap">
+
+{% block footer %}
+
+{% endblock footer %}
+
+	<!-- footer ends -->
+	</div></div>
+
+	<!-- footer-bottom starts -->
+	<div id="footer-bottom">
+		<div class="bottom-left">
+			<p>
+			&copy; 2009 <strong><a href="http://skonieczny.pl/">Janusz Skonieczny</a></strong>&nbsp; &nbsp; &nbsp;
+			Design by: <a href="http://www.styleshout.com/">styleshout</a> and <a href="http://skonieczny.pl/">Janusz Skonieczny</a>.
+			</p>
+		</div>
+
+		<div class="bottom-right">
+			<p>
+				<a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> |
+		   	    <a href="http://validator.w3.org/check/referer">XHTML</a>	|
+				<a href="/">Home</a> |
+				<a href="/sitemap/">Sitemap</a> |
+				<a href="/rss/">RSS Feed</a>
+			</p>
+		</div>
+	<!-- footer-bottom ends -->
+	</div>
+
+<!-- wrap ends here -->
+</div>
+{% endblock body %}
