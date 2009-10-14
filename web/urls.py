@@ -15,5 +15,6 @@ urlpatterns = auth_patterns + patterns('',
     #(r'^$', 'django.views.generic.simple.direct_to_template', {'template': 'main.html'}),
     # Override the default registration form
     #url(r'^account/register/$', 'registration.views.register', kwargs={'form_class': UserRegistrationForm}, name='registration_register'),
+    (r'^i18n/', include('django.conf.urls.i18n')),
     (r'', include('nuntio.urls')),
 ) + urlpatterns
