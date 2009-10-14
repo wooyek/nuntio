@@ -64,7 +64,11 @@ LANGUAGE_CODE = 'en'
 LANGUAGES = (
     ('en', 'English'),
     ('pl', 'Polish'),	
-    ('de', 'German'),
+)
+
+TEMPLATE_LOADERS += (
+    'plebe.template.app_model_prefixed_loader',
+    'plebe.template.app_prefixed_defaults_loader',
 )
 
 TEMPLATE_LOADERS += (
