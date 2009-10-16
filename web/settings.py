@@ -67,8 +67,7 @@ LANGUAGES = (
 )
 
 TEMPLATE_LOADERS += (
-    'plebe.template.app_model_prefixed_loader',
-    'plebe.template.app_prefixed_defaults_loader',
+    'plebe.template.app_model_templates_loader',
 )
 
 TEMPLATE_LOADERS += (
