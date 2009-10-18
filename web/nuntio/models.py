@@ -42,10 +42,10 @@ class File(BaseModel):
     title               = db.StringProperty(required=False)
     full                = db.BlobProperty()
     thumb               = db.BlobProperty()
-    folders             = KeyListProperty(Folder)
     description         = db.TextProperty()
     description_html    = db.TextProperty()
     mime_type           = db.StringProperty()
+    folders             = KeyListProperty(Folder)
 
     @permalink
     def get_absolute_url(self):
@@ -197,6 +197,13 @@ class Article(BaseModel):
         else:
             self.is_short = False
         self.tease_html = markdown.markdown(self.tease)
+
+        if self.author is None:
+            self.author = users.get_current_user().email()
+        if self.slug is None:
+            self.slug = slugify(self.title).__str__()
+        BaseModel.put(self)
+		
         logging.debug("Article %s" % self)
         logging.debug("Article %s" % self.key())
         if update_mains:
@@ -214,12 +221,6 @@ class Article(BaseModel):
                         a.main_on_pages.remove(key)
                         logging.debug(a.main_on_pages)
                         a.put(False)
-
-        if self.author is None:
-            self.author = users.get_current_user().email()
-        if self.slug is None:
-            self.slug = slugify(self.title).__str__()
-        BaseModel.put(self)
 
 class ArticleI18n(BaseModel):
     """ An extenstion to the one article for language different than default"""
