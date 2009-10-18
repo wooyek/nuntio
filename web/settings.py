@@ -70,10 +70,6 @@ TEMPLATE_LOADERS += (
     'plebe.template.app_model_templates_loader',
 )
 
-TEMPLATE_LOADERS += (
-    'plebe.template.app_model_templates_loader',
-)
-
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
     'django.core.context_processors.media',
