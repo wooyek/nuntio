@@ -12,47 +12,82 @@ from  models import *
 class Node(TreeNode):
     name = db.StringProperty()
 
-def printTree():
-    print '### Tree ###'
+def printTree(text = 'Tree'):
+    print '### %s ###' % text
     roots = Node.get_roots().fetch(300,0)
     printNodes(roots,0)
 
 def printNodes(nodes, indent):
     pre = indent * ' '
     for n in nodes:
-        print pre + ("%s = [%d, %d]" % (n.name, n.left_no, n.right_no))
-        printNodes(n.children_set, indent+4)
+        print pre + ("%s (%s)" % (n.name, n.ordinal))
+        printNodes(n.get_children().fetch(300,0), indent+4)
 
 
 class MoveNodes(unittest.TestCase):
     def setUp(self):
-        a = Node(name='A', left_no= 1, right_no=22)
+        for n in Node.all().fetch(300,0):
+            n.delete()
+        a = Node(name='A', ordinal= 1, right_no=22)
         a.put()
-        b = Node(name='B', left_no= 2, right_no=11, parent_node=a)
+        b = Node(name='B', ordinal= 1, right_no=11, parent_node=a)
         b.put()
-        c = Node(name='C', left_no= 3, right_no= 6, parent_node=b)
+        c = Node(name='C', ordinal= 1, right_no= 6, parent_node=b)
         c.put()
-        d = Node(name='D', left_no= 4, right_no= 5, parent_node=c)
+        d = Node(name='D', ordinal= 1, right_no= 5, parent_node=c)
         d.put()
-        e = Node(name='E', left_no= 7, right_no=10, parent_node=b)
+        e = Node(name='E', ordinal= 2, right_no=10, parent_node=b)
         e.put()
-        f = Node(name='F', left_no= 8, right_no= 9, parent_node=e)
+        f = Node(name='F', ordinal= 1, right_no= 9, parent_node=e)
         f.put()
-        g = Node(name='G', left_no=12, right_no=21, parent_node=a)
+        g = Node(name='G', ordinal= 2, right_no=21, parent_node=a)
         g.put()
-        h = Node(name='H', left_no=13, right_no=16, parent_node=g)
+        h = Node(name='H', ordinal= 1, right_no=16, parent_node=g)
         h.put()
-        i = Node(name='I', left_no=14, right_no=15, parent_node=h)
+        i = Node(name='I', ordinal= 1, right_no=15, parent_node=h)
         i.put()
-        j = Node(name='J', left_no=17, right_no=20, parent_node=g)
+        j = Node(name='J', ordinal= 2, right_no=20, parent_node=g)
         j.put()
-        k = Node(name='K', left_no=18, right_no=19, parent_node=j)
+        k = Node(name='K', ordinal= 1, right_no=19, parent_node=j)
         k.put()
-        printTree()
+        printTree('Setup')
 
     def testMoveLeaf(self):
-        pass
-        d = Node.all().filter('left_no =', 4).get()
-        b = Node.all().filter('left_no =', 2).get()
-        d.move_to(b, TreeNode.POSITIONS[3])
-        printTree()
+        n = Node.all().filter('name =', 'D').get()
+        b = Node.all().filter('name =', 'B').get()
+        n.move_to(b, TreeNode.POSITIONS[3])
+        printTree('testMoveLeaf')
+        self.assertEquals(n.ordinal, 2)
+        self.assertEquals(n.parent_node, b.parent_node)
+
+    def testMoveSubtreeRight(self):
+        n = Node.all().filter('name =', 'E').get()
+        b = Node.all().filter('name =', 'B').get()
+        n.move_to(b, TreeNode.POSITIONS[3])
+        printTree('testMoveSubtreeRight')
+        self.assertEquals(n.ordinal, 2)
+        self.assertEquals(n.parent_node, b.parent_node)
+
+    def testMoveSubtreeLeft(self):
+        n = Node.all().filter('name =', 'C').get()
+        b = Node.all().filter('name =', 'B').get()
+        n.move_to(b, TreeNode.POSITIONS[2])
+        printTree('testMoveSubtreeLeft')
+        self.assertEquals(n.ordinal, 1)
+        self.assertEquals(n.parent_node, b.parent_node)
+
+    def testMoveSubtreeIntoLast(self):
+        n = Node.all().filter('name =', 'C').get()
+        t = Node.all().filter('name =', 'A').get()
+        n.move_to(t, TreeNode.POSITIONS[1])
+        printTree('testMoveSubtreeIntoLast')
+        self.assertEquals(n.ordinal, 3)
+        self.assertEquals(n.parent_node, t)
+
+    def testMoveSubtreeIntoFirst(self):
+        n = Node.all().filter('name =', 'C').get()
+        t = Node.all().filter('name =', 'A').get()
+        n.move_to(t, TreeNode.POSITIONS[0])
+        printTree('testMoveSubtreeIntoFirst')
+        self.assertEquals(n.ordinal, 1)
+        self.assertEquals(n.parent_node, t)
