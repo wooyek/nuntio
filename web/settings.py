@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     'ragendja',
     'registration',
     'mediautils',
+    'mptt',
     'nuntio',
 )
 
